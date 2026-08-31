@@ -20,6 +20,14 @@ print(f"Result: {x + y}")</textarea>
   <pre id="output" style="background: #f0f0f0; padding: 10px; min-height: 50px; border: 1px solid #ccc;"></pre>
 
   <script type="text/javascript">
+    function browserInput(promptText) {
+      const answer = window.prompt(promptText || "");
+      const value = answer === null ? "" : answer;
+      // echo it into the output box so it reads like a real transcript
+      document.getElementById("output").textContent += `${promptText}${value}\n`;
+      return value;
+    }
+
     async function main() {
       const outputElement = document.getElementById("output");
       const button = document.getElementById("run-btn");
@@ -40,6 +48,14 @@ print(f"Result: {x + y}")</textarea>
         });
 
         outputElement.textContent = "Pyodide Ready via local NPM files. Click 'Run'.\n";
+
+        pyodide.globals.set("browserInput", browserInput);
+        await pyodide.runPythonAsync(`
+import builtins
+def _input_shim(prompt=""):
+    return browserInput(prompt)
+builtins.input = _input_shim
+`);
 
         button.addEventListener("click", async () => {
           outputElement.textContent = ""; // Clear output
