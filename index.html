@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pyodide NPM Local Runner</title>
+  <script src="https://cdn.jsdelivr.net/pyodide/v314.0.6/full/pyodide.js"></script>
 </head>
+
 <body>
-    <textarea name="code" id="code" rows="10" cols="50">print("Hello from local NPM Pyodide script!")
+  <textarea name="code" id="code" rows="10" cols="50">print("Hello from local NPM Pyodide script!")
 x = 100
 y = 200
 print(f"Result: {x + y}")</textarea>
@@ -15,5 +18,32 @@ print(f"Result: {x + y}")</textarea>
 
   <h3>Output:</h3>
   <pre id="output" style="background: #f0f0f0; padding: 10px; min-height: 50px; border: 1px solid #ccc;"></pre>
+
+  <script type="text/javascript">
+    async function main() {
+      const outputElement = document.getElementById("output");
+
+      outputElement.textContent = "Loading local Pyodide environment...";
+
+      try {
+        // 3. Explicitly point the indexURL to your local folder containing the .wasm assets
+        let pyodide = await loadPyodide({
+          indexURL: "https://cdn.jsdelivr.net/pyodide/v314.0.6/full/",
+          stdout: (text) => {
+            outputElement.textContent += text + "\n";
+          },
+          stderr: (text) => {
+            outputElement.textContent += "Error: " + text + "\n";
+          }
+        });
+
+        outputElement.textContent = "Pyodide Ready via local NPM files. Click 'Run'.\n";
+      } catch (initError) {
+        outputElement.textContent = `Initialization Failed: ${initError.message}`;
+      }
+    }
+    main();
+  </script>
 </body>
+
 </html>
