@@ -10,6 +10,19 @@
 
 <body>
   <p id="status"></p>
+  <label>
+    <input type="checkbox" id="complete-session1">
+    Mark this session complete
+  </label>
+  <div class="code-runner">
+    <textarea class="code-input" rows="10" cols="50">print("Hello, Greenbridge!")</textarea>
+    <br>
+    <button class="run-btn">Run</button>
+
+    <h3>Output:</h3>
+    <pre class="output" style="background: #f0f0f0; padding: 10px; min-height: 50px; border: 1px solid #ccc;"></pre>
+  </div>
+
   <div class="code-runner">
     <textarea class="code-input" rows="10" cols="50">print("Hello, Greenbridge!")</textarea>
     <br>
@@ -77,6 +90,18 @@ builtins.input = _input_shim
     }
 
     main();
+
+    const completeBox = document.getElementById("complete-session1");
+
+    // On page load, check if this was already marked complete before
+    if (localStorage.getItem("session1-complete") === "true") {
+      completeBox.checked = true;
+    }
+
+    // Whenever the learner clicks the checkbox, save the new state
+    completeBox.addEventListener("change", () => {
+      localStorage.setItem("session1-complete", completeBox.checked);
+    });
   </script>
 </body>
 
