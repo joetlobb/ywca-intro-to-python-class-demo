@@ -9,45 +9,41 @@
 </head>
 
 <body>
-  <textarea name="code" id="code" rows="10" cols="50">print("Hello from local NPM Pyodide script!")
-x = 100
-y = 200
-print(f"Result: {x + y}")</textarea>
-  <br>
-  <button id="run-btn">Run</button>
+  <p id="status"></p>
+  <div class="code-runner">
+    <textarea class="code-input" rows="10" cols="50">print("Hello, Greenbridge!")</textarea>
+    <br>
+    <button class="run-btn">Run</button>
 
-  <h3>Output:</h3>
-  <pre id="output" style="background: #f0f0f0; padding: 10px; min-height: 50px; border: 1px solid #ccc;"></pre>
+    <h3>Output:</h3>
+    <pre class="output" style="background: #f0f0f0; padding: 10px; min-height: 50px; border: 1px solid #ccc;"></pre>
+  </div>
 
   <script type="text/javascript">
+    let currentOutputEl = null; // tracks which block is currently running, for stdout/input to target
+
     function browserInput(promptText) {
       const answer = window.prompt(promptText || "");
       const value = answer === null ? "" : answer;
-      // echo it into the output box so it reads like a real transcript
-      document.getElementById("output").textContent += `${promptText}${value}\n`;
+      if (currentOutputEl) currentOutputEl.textContent += `${promptText}${value}\n`;
       return value;
     }
 
     async function main() {
-      const outputElement = document.getElementById("output");
-      const button = document.getElementById("run-btn");
-      const textarea = document.getElementById("code");
+      const statusEl = document.getElementById("status");
+      statusEl.textContent = "Loading Python environment...";
 
-      outputElement.textContent = "Loading local Pyodide environment...";
 
       try {
-        // 3. Explicitly point the indexURL to your local folder containing the .wasm assets
-        let pyodide = await loadPyodide({
+        const pyodide = await loadPyodide({
           indexURL: "https://cdn.jsdelivr.net/pyodide/v314.0.6/full/",
           stdout: (text) => {
-            outputElement.textContent += text + "\n";
+            if (currentOutputEl) currentOutputEl.textContent += text + "\n";
           },
           stderr: (text) => {
-            outputElement.textContent += "Error: " + text + "\n";
+            if (currentOutputEl) currentOutputEl.textContent += "Error: " + text + "\n";
           }
         });
-
-        outputElement.textContent = "Pyodide Ready via local NPM files. Click 'Run'.\n";
 
         pyodide.globals.set("browserInput", browserInput);
         await pyodide.runPythonAsync(`
@@ -57,23 +53,29 @@ def _input_shim(prompt=""):
 builtins.input = _input_shim
 `);
 
-        button.addEventListener("click", async () => {
-          outputElement.textContent = ""; // Clear output
-          const codeToRun = textarea.value;
+        statusEl.textContent = "Ready.";
 
-          try {
-            let result = await pyodide.runPythonAsync(codeToRun);
-            if (result !== undefined) {
-              outputElement.textContent += `\n[Returned]: ${result}`;
+        document.querySelectorAll(".code-runner").forEach(runner => {
+          const textarea = runner.querySelector(".code-input");
+          const button = runner.querySelector(".run-btn");
+          const output = runner.querySelector(".output");
+
+          button.addEventListener("click", async () => {
+            currentOutputEl = output;
+            output.textContent = "";
+            try {
+              await pyodide.runPythonAsync(textarea.value);
+            } catch (err) {
+              output.textContent += `\nExecution Error: ${err.message}`;
             }
-          } catch (err) {
-            outputElement.textContent += `\nExecution Error: ${err.message}`;
-          }
+          });
         });
+
       } catch (initError) {
-        outputElement.textContent = `Initialization Failed: ${initError.message}`;
+        statusEl.textContent = `Initialization Failed: ${initError.message}`;
       }
     }
+
     main();
   </script>
 </body>
