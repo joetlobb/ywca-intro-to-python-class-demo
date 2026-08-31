@@ -22,6 +22,8 @@ print(f"Result: {x + y}")</textarea>
   <script type="text/javascript">
     async function main() {
       const outputElement = document.getElementById("output");
+      const button = document.getElementById("run-btn");
+      const textarea = document.getElementById("code");
 
       outputElement.textContent = "Loading local Pyodide environment...";
 
@@ -38,6 +40,20 @@ print(f"Result: {x + y}")</textarea>
         });
 
         outputElement.textContent = "Pyodide Ready via local NPM files. Click 'Run'.\n";
+
+        button.addEventListener("click", async () => {
+          outputElement.textContent = ""; // Clear output
+          const codeToRun = textarea.value;
+
+          try {
+            let result = await pyodide.runPythonAsync(codeToRun);
+            if (result !== undefined) {
+              outputElement.textContent += `\n[Returned]: ${result}`;
+            }
+          } catch (err) {
+            outputElement.textContent += `\nExecution Error: ${err.message}`;
+          }
+        });
       } catch (initError) {
         outputElement.textContent = `Initialization Failed: ${initError.message}`;
       }
