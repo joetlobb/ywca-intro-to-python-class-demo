@@ -114,7 +114,7 @@
   <script type="text/javascript">
     const TOPICS = [
       { id: "getting-started", title: "Getting Started", subtitle: "What is programming? Meet Python, and run your first line of code.", href: "session1.html", available: true },
-      { id: "variables-input", title: "Storing Information", subtitle: "Variables, and getting input from the person using your program.", href: null, available: false },
+      { id: "variables-input", title: "Storing Information", subtitle: "Variables, and getting input from the person using your program.", href: "session2.html", available: true },
       { id: "decisions", title: "Making Decisions", subtitle: "Using if / elif / else to make a program respond differently.", href: null, available: false },
       { id: "loops", title: "Repeating Things", subtitle: "For loops and while loops, so you don't repeat yourself.", href: null, available: false },
       { id: "lists-functions", title: "Organizing Code", subtitle: "Lists, and writing your own reusable functions.", href: null, available: false },
@@ -128,7 +128,7 @@
       if (active) {
         panel.innerHTML = `
           <div>Working with: <strong>${active}</strong></div>
-          <div class="client-note">Progress saved for this name will be remembered if they come back another day. Switch to a new name before the next client sits down.</div>
+          <div class="client-note">Progress is saved on this computer only, under this name. If this client returns and uses a different computer, it won't carry over. Switch to a new name before the next client sits down.</div>
           <br>
           <button class="btn secondary" id="switch-btn">Switch client</button>
         `;

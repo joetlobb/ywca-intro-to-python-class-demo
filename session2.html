@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Session 1: What Is Programming? Meet Python</title>
+  <title>Storing Information: Variables & Getting Input</title>
   <script src="client.js"></script>
   <script src="https://cdn.jsdelivr.net/pyodide/v314.0.6/full/pyodide.js"></script>
   <style>
@@ -90,6 +90,14 @@
       border-radius: 4px;
       margin: 14px 0;
     }
+    .note {
+      background: #fff4e5;
+      border-left: 4px solid #c9822b;
+      padding: 10px 14px;
+      border-radius: 4px;
+      margin: 14px 0;
+      font-size: 0.95rem;
+    }
     .complete-box {
       margin-top: 40px;
       padding: 16px;
@@ -105,75 +113,91 @@
 
   <p><a href="index.html">&larr; Back to all topics</a></p>
 
-  <h1>Getting Started: What Is Programming? Meet Python</h1>
+  <h1>Storing Information: Variables &amp; Getting Input</h1>
   <p class="subtitle" id="client-banner">YWCA Learning Center &mdash; Intro to Python Programming</p>
 
   <p id="status">Loading Python environment&hellip;</p>
 
   <h2>Learning Objectives</h2>
-  <p>By the end of this session, you'll be able to:</p>
+  <p>By the end of this topic, you'll be able to:</p>
   <ul class="objectives">
-    <li>Explain, in your own words, what a computer program is.</li>
-    <li>Run your first line of Python code.</li>
-    <li>Use the <code>print()</code> function to display a message.</li>
-    <li>Recognize and fix a basic error message.</li>
+    <li>Store information in a variable and explain why that's useful.</li>
+    <li>Tell the difference between text (strings) and numbers.</li>
+    <li>Use <code>input()</code> to get information from the person using your program.</li>
+    <li>Combine variables and text using an f-string.</li>
   </ul>
 
   <h2>Key Vocabulary</h2>
   <dl class="vocab">
-    <dt>Program</dt>
-    <dd>a list of instructions a computer follows, in order, one at a time.</dd>
-    <dt>Code</dt>
-    <dd>the instructions themselves, written in a language the computer understands.</dd>
-    <dt>Python</dt>
-    <dd>one of many programming languages &mdash; known for reading almost like plain English.</dd>
-    <dt>Run</dt>
-    <dd>to have the computer actually carry out the instructions in your code.</dd>
-    <dt>Syntax error</dt>
-    <dd>a mistake in how code is written &mdash; like a typo or missing punctuation &mdash; that stops the program from running.</dd>
+    <dt>Variable</dt>
+    <dd>a named container that holds a piece of information so you can use it later.</dd>
+    <dt>String</dt>
+    <dd>text data, always written inside quotes, like "hello".</dd>
+    <dt>Integer / float</dt>
+    <dd>whole numbers (integers) and numbers with decimals (floats).</dd>
+    <dt>input()</dt>
+    <dd>a function that pauses the program and waits for the person using it to type something.</dd>
+    <dt>f-string</dt>
+    <dd>a shortcut for building text that includes the value of a variable, written as f"...".</dd>
   </dl>
 
-  <h2>Your First Program</h2>
-  <p>A program is just a list of instructions a computer follows, in order &mdash; the same way a recipe is a list of instructions a person follows to bake bread. Below is a real, working Python program. Click <strong>Run</strong> and see what happens.</p>
+  <h2>Storing Information in a Variable</h2>
+  <p>Think of a variable as a labeled box you can put something into, and take back out later by name. Try the example below.</p>
 
   <div class="code-runner">
     <div class="label">Try it</div>
-    <textarea class="code-input" rows="3">print("Hello, Greenbridge!")</textarea>
+    <textarea class="code-input" rows="4">name = "Maria"
+age = 34
+print(name)
+print(age)</textarea>
     <br><button class="run-btn">Run</button>
     <pre class="output"></pre>
   </div>
 
-  <p>Now change the text inside the quotes to your own name, and click Run again.</p>
-
-  <h2>Leaving Notes With Comments</h2>
-  <p>Anything written after a <code>#</code> symbol is a note for humans &mdash; the computer ignores it completely. This is useful for leaving yourself reminders inside your code.</p>
+  <p>Notice <code>name</code> holds text (a string, in quotes) and <code>age</code> holds a number (no quotes). You can combine both into one sentence using an f-string &mdash; just put an <code>f</code> right before the opening quote, and wrap any variable in curly braces.</p>
 
   <div class="code-runner">
     <div class="label">Try it</div>
-    <textarea class="code-input" rows="4"># This line prints a greeting
-print("Hello, Greenbridge!")</textarea>
+    <textarea class="code-input" rows="4">name = "Maria"
+age = 34
+print(f"{name} is {age} years old.")</textarea>
     <br><button class="run-btn">Run</button>
     <pre class="output"></pre>
+  </div>
+
+  <h2>Asking the User a Question</h2>
+  <p><code>input()</code> lets your program ask a question and wait for the person using it to type an answer, instead of you hard-coding the value yourself.</p>
+
+  <div class="code-runner">
+    <div class="label">Try it</div>
+    <textarea class="code-input" rows="3">name = input("What is your name? ")
+print(f"Welcome, {name}!")</textarea>
+    <br><button class="run-btn">Run</button>
+    <pre class="output"></pre>
+  </div>
+
+  <div class="note">
+    <strong>Good to know:</strong> <code>input()</code> always hands back text, even if someone types a number. If you want to do math with it, wrap it in <code>int()</code> or <code>float()</code> first, like <code>age = int(input("Your age? "))</code>.
   </div>
 
   <h2>Guided Practice</h2>
-  <p>Write three <code>print()</code> statements: one that prints your name, one that prints your favorite food, and one that prints something you're hoping to learn in this class. Then try breaking one on purpose &mdash; delete a closing quote or parenthesis &mdash; and click Run, so you can see what an error message looks like before it happens to you by accident.</p>
+  <p>Write a short program that asks for the user's name and favorite color, then prints a sentence using both &mdash; for example, "Maria's favorite color is blue."</p>
 
   <div class="code-runner">
     <div class="label">Your turn</div>
-    <textarea class="code-input" rows="4">print("My name is ...")
-print("My favorite food is ...")
-print("I'm hoping to learn ...")</textarea>
+    <textarea class="code-input" rows="4">name = input("What is your name? ")
+color = input("What is your favorite color? ")
+</textarea>
     <br><button class="run-btn">Run</button>
     <pre class="output"></pre>
   </div>
 
   <h2>Independent Practice</h2>
-  <p>Write five <code>print()</code> statements introducing yourself: your name, one fact about you, and one goal for this class. Try adding a comment above at least one line.</p>
+  <p>Write a program that asks three questions &mdash; name, city, and one fun fact &mdash; and prints all three back in a friendly sentence using an f-string.</p>
 
   <div class="code-runner">
     <div class="label">Your turn</div>
-    <textarea class="code-input" rows="6"># Write your five print() statements below
+    <textarea class="code-input" rows="6"># Ask three questions and print them back below
 
 </textarea>
     <br><button class="run-btn">Run</button>
@@ -181,10 +205,12 @@ print("I'm hoping to learn ...")</textarea>
   </div>
 
   <div class="stretch">
-    <strong>Stretch activity (optional):</strong> try what happens when you <code>print()</code> two things separated by a comma, like <code>print("Age:", 30)</code>.
+    <strong>Stretch activity (optional):</strong> ask for two numbers with <code>input()</code>, convert them with <code>int()</code>, and print their sum using an f-string.
     <div class="code-runner">
       <div class="label">Stretch</div>
-      <textarea class="code-input" rows="2">print("Age:", 30)</textarea>
+      <textarea class="code-input" rows="4">first = int(input("First number: "))
+second = int(input("Second number: "))
+</textarea>
       <br><button class="run-btn">Run</button>
       <pre class="output"></pre>
     </div>
@@ -192,19 +218,17 @@ print("I'm hoping to learn ...")</textarea>
 
   <h2>Common Mistakes to Watch For</h2>
   <ul>
-    <li>Using &ldquo;smart quotes&rdquo; pasted from Word or Google Docs (&ldquo; &rdquo;) instead of straight quotes (" ") &mdash; Python won't accept curly quotes.</li>
-    <li>Forgetting the closing parenthesis or quotation mark.</li>
-    <li>Typing <code>Print</code> with a capital P &mdash; Python is case-sensitive, so it must be <code>print</code>.</li>
+    <li>Forgetting the <code>f</code> right before the opening quote when trying to use <code>{variable}</code> inside text.</li>
+    <li>Trying to do math directly on an <code>input()</code> value without converting it to a number first &mdash; <code>"3" + "4"</code> gives <code>"34"</code>, not <code>7</code>.</li>
+    <li>Mismatched variable names &mdash; Python is case-sensitive, so <code>Name</code> and <code>name</code> are two different variables.</li>
   </ul>
 
   <div class="complete-box">
     <label>
-      <input type="checkbox" id="complete-session1">
-      Mark this session complete
+      <input type="checkbox" id="complete-topic">
+      Mark this topic complete
     </label>
   </div>
-
-  <p><a href="index.html">&larr; Back to all topics</a></p>
 
   <script type="text/javascript">
     let currentOutputEl = null;
@@ -261,15 +285,14 @@ builtins.input = _input_shim
     main();
 
     // Show who this progress belongs to, so it's obvious on a shared computer
-    const TOPIC_ID = "getting-started";
+    const TOPIC_ID = "variables-input";
     const clientBanner = document.getElementById("client-banner");
     const activeClient = getActiveClient();
     clientBanner.textContent = activeClient
       ? `YWCA Learning Center — working with ${activeClient}`
       : "YWCA Learning Center — no client selected (go back to Topics to enter a name)";
 
-    // Mark-complete checkbox: remember state per active client
-    const completeBox = document.getElementById("complete-session1");
+    const completeBox = document.getElementById("complete-topic");
     completeBox.checked = isTopicComplete(TOPIC_ID);
     completeBox.addEventListener("change", () => {
       setTopicComplete(TOPIC_ID, completeBox.checked);
