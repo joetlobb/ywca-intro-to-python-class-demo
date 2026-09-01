@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Session 1: What Is Programming? Meet Python</title>
+  <script src="client.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v314.0.6/full/pyodide.js"></script>
+  <style>
+    :root {
+      --accent: #1f4e5f;
+      --bg: #f7f7f5;
+      --code-bg: #f2f2f2;
+      --border: #cccccc;
+    }
+    body {
+      font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+      line-height: 1.5;
+      color: #222;
+      background: var(--bg);
+    }
+    h1 { color: var(--accent); font-size: 1.6rem; margin-bottom: 4px; }
+    .subtitle { color: #555; margin-top: 0; margin-bottom: 24px; }
+    h2 { color: var(--accent); font-size: 1.15rem; margin-top: 36px; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+    #status {
+      background: #fff8e1;
+      border: 1px solid #e0c97f;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+    .vocab dt { font-weight: bold; margin-top: 8px; }
+    .vocab dd { margin: 0 0 4px 0; }
+    ul.objectives { padding-left: 20px; }
+    .code-runner {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      margin: 14px 0 22px;
+    }
+    .code-runner .label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #777;
+      margin-bottom: 6px;
+    }
+    .code-input {
+      width: 100%;
+      box-sizing: border-box;
+      font-family: "Courier New", monospace;
+      font-size: 0.95rem;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      resize: vertical;
+    }
+    .run-btn {
+      margin-top: 8px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .run-btn:hover { opacity: 0.9; }
+    .output {
+      background: var(--code-bg);
+      padding: 10px;
+      min-height: 24px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-top: 8px;
+      font-family: "Courier New", monospace;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+    }
+    .stretch {
+      background: #eef5f2;
+      border-left: 4px solid var(--accent);
+      padding: 10px 14px;
+      border-radius: 4px;
+      margin: 14px 0;
+    }
+    .complete-box {
+      margin-top: 40px;
+      padding: 16px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <p><a href="index.html">&larr; Back to all topics</a></p>
+
+  <h1>Getting Started: What Is Programming? Meet Python</h1>
+  <p class="subtitle" id="client-banner">YWCA Learning Center &mdash; Intro to Python Programming</p>
+
+  <p id="status">Loading Python environment&hellip;</p>
+
+  <h2>Learning Objectives</h2>
+  <p>By the end of this session, you'll be able to:</p>
+  <ul class="objectives">
+    <li>Explain, in your own words, what a computer program is.</li>
+    <li>Run your first line of Python code.</li>
+    <li>Use the <code>print()</code> function to display a message.</li>
+    <li>Recognize and fix a basic error message.</li>
+  </ul>
+
+  <h2>Key Vocabulary</h2>
+  <dl class="vocab">
+    <dt>Program</dt>
+    <dd>a list of instructions a computer follows, in order, one at a time.</dd>
+    <dt>Code</dt>
+    <dd>the instructions themselves, written in a language the computer understands.</dd>
+    <dt>Python</dt>
+    <dd>one of many programming languages &mdash; known for reading almost like plain English.</dd>
+    <dt>Run</dt>
+    <dd>to have the computer actually carry out the instructions in your code.</dd>
+    <dt>Syntax error</dt>
+    <dd>a mistake in how code is written &mdash; like a typo or missing punctuation &mdash; that stops the program from running.</dd>
+  </dl>
+
+  <h2>Your First Program</h2>
+  <p>A program is just a list of instructions a computer follows, in order &mdash; the same way a recipe is a list of instructions a person follows to bake bread. Below is a real, working Python program. Click <strong>Run</strong> and see what happens.</p>
+
+  <div class="code-runner">
+    <div class="label">Try it</div>
+    <textarea class="code-input" rows="3">print("Hello, Greenbridge!")</textarea>
+    <br><button class="run-btn">Run</button>
+    <pre class="output"></pre>
+  </div>
+
+  <p>Now change the text inside the quotes to your own name, and click Run again.</p>
+
+  <h2>Leaving Notes With Comments</h2>
+  <p>Anything written after a <code>#</code> symbol is a note for humans &mdash; the computer ignores it completely. This is useful for leaving yourself reminders inside your code.</p>
+
+  <div class="code-runner">
+    <div class="label">Try it</div>
+    <textarea class="code-input" rows="4"># This line prints a greeting
+print("Hello, Greenbridge!")</textarea>
+    <br><button class="run-btn">Run</button>
+    <pre class="output"></pre>
+  </div>
+
+  <h2>Guided Practice</h2>
+  <p>Write three <code>print()</code> statements: one that prints your name, one that prints your favorite food, and one that prints something you're hoping to learn in this class. Then try breaking one on purpose &mdash; delete a closing quote or parenthesis &mdash; and click Run, so you can see what an error message looks like before it happens to you by accident.</p>
+
+  <div class="code-runner">
+    <div class="label">Your turn</div>
+    <textarea class="code-input" rows="4">print("My name is ...")
+print("My favorite food is ...")
+print("I'm hoping to learn ...")</textarea>
+    <br><button class="run-btn">Run</button>
+    <pre class="output"></pre>
+  </div>
+
+  <h2>Independent Practice</h2>
+  <p>Write five <code>print()</code> statements introducing yourself: your name, one fact about you, and one goal for this class. Try adding a comment above at least one line.</p>
+
+  <div class="code-runner">
+    <div class="label">Your turn</div>
+    <textarea class="code-input" rows="6"># Write your five print() statements below
+
+</textarea>
+    <br><button class="run-btn">Run</button>
+    <pre class="output"></pre>
+  </div>
+
+  <div class="stretch">
+    <strong>Stretch activity (optional):</strong> try what happens when you <code>print()</code> two things separated by a comma, like <code>print("Age:", 30)</code>.
+    <div class="code-runner">
+      <div class="label">Stretch</div>
+      <textarea class="code-input" rows="2">print("Age:", 30)</textarea>
+      <br><button class="run-btn">Run</button>
+      <pre class="output"></pre>
+    </div>
+  </div>
+
+  <h2>Common Mistakes to Watch For</h2>
+  <ul>
+    <li>Using &ldquo;smart quotes&rdquo; pasted from Word or Google Docs (&ldquo; &rdquo;) instead of straight quotes (" ") &mdash; Python won't accept curly quotes.</li>
+    <li>Forgetting the closing parenthesis or quotation mark.</li>
+    <li>Typing <code>Print</code> with a capital P &mdash; Python is case-sensitive, so it must be <code>print</code>.</li>
+  </ul>
+
+  <div class="complete-box">
+    <label>
+      <input type="checkbox" id="complete-session1">
+      Mark this session complete
+    </label>
+  </div>
+
+  <script type="text/javascript">
+    let currentOutputEl = null;
+
+    function browserInput(promptText) {
+      const answer = window.prompt(promptText || "");
+      const value = answer === null ? "" : answer;
+      if (currentOutputEl) currentOutputEl.textContent += `${promptText}${value}\n`;
+      return value;
+    }
+
+    async function main() {
+      const statusEl = document.getElementById("status");
+      statusEl.textContent = "Loading Python environment…";
+
+      try {
+        const pyodide = await loadPyodide({
+          indexURL: "https://cdn.jsdelivr.net/pyodide/v314.0.6/full/",
+          stdout: (text) => { if (currentOutputEl) currentOutputEl.textContent += text + "\n"; },
+          stderr: (text) => { if (currentOutputEl) currentOutputEl.textContent += "Error: " + text + "\n"; }
+        });
+
+        pyodide.globals.set("browserInput", browserInput);
+        await pyodide.runPythonAsync(`
+import builtins
+def _input_shim(prompt=""):
+    return browserInput(prompt)
+builtins.input = _input_shim
+`);
+
+        statusEl.textContent = "Ready. Click Run on any example below.";
+
+        document.querySelectorAll(".code-runner").forEach(runner => {
+          const textarea = runner.querySelector(".code-input");
+          const button = runner.querySelector(".run-btn");
+          const output = runner.querySelector(".output");
+
+          button.addEventListener("click", async () => {
+            currentOutputEl = output;
+            output.textContent = "";
+            try {
+              await pyodide.runPythonAsync(textarea.value);
+            } catch (err) {
+              output.textContent += `\nExecution Error: ${err.message}`;
+            }
+          });
+        });
+
+      } catch (initError) {
+        statusEl.textContent = `Initialization Failed: ${initError.message}`;
+      }
+    }
+
+    main();
+
+    // Show who this progress belongs to, so it's obvious on a shared computer
+    const TOPIC_ID = "getting-started";
+    const clientBanner = document.getElementById("client-banner");
+    const activeClient = getActiveClient();
+    clientBanner.textContent = activeClient
+      ? `YWCA Learning Center — working with ${activeClient}`
+      : "YWCA Learning Center — no client selected (go back to Topics to enter a name)";
+
+    // Mark-complete checkbox: remember state per active client
+    const completeBox = document.getElementById("complete-session1");
+    completeBox.checked = isTopicComplete(TOPIC_ID);
+    completeBox.addEventListener("change", () => {
+      setTopicComplete(TOPIC_ID, completeBox.checked);
+    });
+  </script>
+
+</body>
+
+</html>

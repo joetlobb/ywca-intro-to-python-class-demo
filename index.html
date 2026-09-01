@@ -4,105 +4,187 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pyodide NPM Local Runner</title>
-  <script src="https://cdn.jsdelivr.net/pyodide/v314.0.6/full/pyodide.js"></script>
+  <title>Intro to Python — YWCA Learning Center</title>
+  <script src="client.js"></script>
+  <style>
+    :root {
+      --accent: #1f4e5f;
+      --bg: #f7f7f5;
+      --border: #cccccc;
+    }
+    body {
+      font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+      line-height: 1.5;
+      color: #222;
+      background: var(--bg);
+    }
+    h1 { color: var(--accent); font-size: 1.6rem; margin-bottom: 4px; }
+    .subtitle { color: #555; margin-top: 0; margin-bottom: 28px; }
+
+    .client-panel {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 28px;
+    }
+    .client-panel input {
+      font-size: 1rem;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      width: 200px;
+      margin-right: 8px;
+    }
+    .btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    .btn.secondary {
+      background: #fff;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+    .btn:hover { opacity: 0.9; }
+    .client-note {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 8px;
+    }
+
+    .topic-grid {
+      display: grid;
+      gap: 14px;
+    }
+    .topic-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .topic-card.disabled { opacity: 0.55; }
+    .topic-title { font-weight: bold; margin: 0 0 2px; }
+    .topic-subtitle { margin: 0; color: #555; font-size: 0.92rem; }
+    .status {
+      font-size: 0.8rem;
+      margin-top: 6px;
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    .status.complete { background: #e3f3e6; color: #1e7a34; }
+    .status.not-started { background: #eee; color: #666; }
+    .open-link {
+      white-space: nowrap;
+      text-decoration: none;
+      background: var(--accent);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    .open-link.disabled {
+      background: #ccc;
+      pointer-events: none;
+    }
+  </style>
 </head>
 
 <body>
-  <p id="status"></p>
-  <label>
-    <input type="checkbox" id="complete-session1">
-    Mark this session complete
-  </label>
-  <div class="code-runner">
-    <textarea class="code-input" rows="10" cols="50">print("Hello, Greenbridge!")</textarea>
-    <br>
-    <button class="run-btn">Run</button>
 
-    <h3>Output:</h3>
-    <pre class="output" style="background: #f0f0f0; padding: 10px; min-height: 50px; border: 1px solid #ccc;"></pre>
-  </div>
+  <h1>Intro to Python</h1>
+  <p class="subtitle">YWCA Learning Center &mdash; pick a topic based on what you'd like to learn today.</p>
 
-  <div class="code-runner">
-    <textarea class="code-input" rows="10" cols="50">print("Hello, Greenbridge!")</textarea>
-    <br>
-    <button class="run-btn">Run</button>
+  <div class="client-panel" id="client-panel"></div>
 
-    <h3>Output:</h3>
-    <pre class="output" style="background: #f0f0f0; padding: 10px; min-height: 50px; border: 1px solid #ccc;"></pre>
-  </div>
+  <div class="topic-grid" id="topic-grid"></div>
 
   <script type="text/javascript">
-    let currentOutputEl = null; // tracks which block is currently running, for stdout/input to target
+    const TOPICS = [
+      { id: "getting-started", title: "Getting Started", subtitle: "What is programming? Meet Python, and run your first line of code.", href: "session1.html", available: true },
+      { id: "variables-input", title: "Storing Information", subtitle: "Variables, and getting input from the person using your program.", href: null, available: false },
+      { id: "decisions", title: "Making Decisions", subtitle: "Using if / elif / else to make a program respond differently.", href: null, available: false },
+      { id: "loops", title: "Repeating Things", subtitle: "For loops and while loops, so you don't repeat yourself.", href: null, available: false },
+      { id: "lists-functions", title: "Organizing Code", subtitle: "Lists, and writing your own reusable functions.", href: null, available: false },
+      { id: "quiz-project", title: "Practice Project", subtitle: "Put it all together and build a simple quiz game.", href: null, available: false },
+    ];
 
-    function browserInput(promptText) {
-      const answer = window.prompt(promptText || "");
-      const value = answer === null ? "" : answer;
-      if (currentOutputEl) currentOutputEl.textContent += `${promptText}${value}\n`;
-      return value;
-    }
+    function renderClientPanel() {
+      const panel = document.getElementById("client-panel");
+      const active = getActiveClient();
 
-    async function main() {
-      const statusEl = document.getElementById("status");
-      statusEl.textContent = "Loading Python environment...";
-
-
-      try {
-        const pyodide = await loadPyodide({
-          indexURL: "https://cdn.jsdelivr.net/pyodide/v314.0.6/full/",
-          stdout: (text) => {
-            if (currentOutputEl) currentOutputEl.textContent += text + "\n";
-          },
-          stderr: (text) => {
-            if (currentOutputEl) currentOutputEl.textContent += "Error: " + text + "\n";
-          }
+      if (active) {
+        panel.innerHTML = `
+          <div>Working with: <strong>${active}</strong></div>
+          <div class="client-note">Progress saved for this name will be remembered if they come back another day. Switch to a new name before the next client sits down.</div>
+          <br>
+          <button class="btn secondary" id="switch-btn">Switch client</button>
+        `;
+        document.getElementById("switch-btn").addEventListener("click", () => {
+          clearActiveClient();
+          renderClientPanel();
+          renderTopics();
         });
-
-        pyodide.globals.set("browserInput", browserInput);
-        await pyodide.runPythonAsync(`
-import builtins
-def _input_shim(prompt=""):
-    return browserInput(prompt)
-builtins.input = _input_shim
-`);
-
-        statusEl.textContent = "Ready.";
-
-        document.querySelectorAll(".code-runner").forEach(runner => {
-          const textarea = runner.querySelector(".code-input");
-          const button = runner.querySelector(".run-btn");
-          const output = runner.querySelector(".output");
-
-          button.addEventListener("click", async () => {
-            currentOutputEl = output;
-            output.textContent = "";
-            try {
-              await pyodide.runPythonAsync(textarea.value);
-            } catch (err) {
-              output.textContent += `\nExecution Error: ${err.message}`;
-            }
-          });
+      } else {
+        panel.innerHTML = `
+          <div><strong>Who's working today?</strong></div>
+          <div class="client-note">Type a first name so progress doesn't get mixed up on this shared computer.</div>
+          <br>
+          <input type="text" id="client-name-input" placeholder="First name">
+          <button class="btn" id="start-btn">Start</button>
+        `;
+        const startSession = () => {
+          const input = document.getElementById("client-name-input");
+          const name = input.value.trim();
+          if (!name) { input.focus(); return; }
+          setActiveClient(name);
+          renderClientPanel();
+          renderTopics();
+        };
+        document.getElementById("start-btn").addEventListener("click", startSession);
+        document.getElementById("client-name-input").addEventListener("keydown", (e) => {
+          if (e.key === "Enter") startSession();
         });
-
-      } catch (initError) {
-        statusEl.textContent = `Initialization Failed: ${initError.message}`;
       }
     }
 
-    main();
-
-    const completeBox = document.getElementById("complete-session1");
-
-    // On page load, check if this was already marked complete before
-    if (localStorage.getItem("session1-complete") === "true") {
-      completeBox.checked = true;
+    function renderTopics() {
+      const grid = document.getElementById("topic-grid");
+      grid.innerHTML = "";
+      TOPICS.forEach(topic => {
+        const complete = isTopicComplete(topic.id);
+        const card = document.createElement("div");
+        card.className = "topic-card" + (topic.available ? "" : " disabled");
+        card.innerHTML = `
+          <div>
+            <p class="topic-title">${topic.title}</p>
+            <p class="topic-subtitle">${topic.subtitle}</p>
+            <span class="status ${complete ? "complete" : "not-started"}">${complete ? "Completed" : (topic.available ? "Not started" : "Coming soon")}</span>
+          </div>
+          ${topic.available
+            ? `<a class="open-link" href="${topic.href}">Open</a>`
+            : `<span class="open-link disabled">Open</span>`}
+        `;
+        grid.appendChild(card);
+      });
     }
 
-    // Whenever the learner clicks the checkbox, save the new state
-    completeBox.addEventListener("change", () => {
-      localStorage.setItem("session1-complete", completeBox.checked);
-    });
+    renderClientPanel();
+    renderTopics();
   </script>
+
 </body>
 
 </html>
