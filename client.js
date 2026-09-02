@@ -37,6 +37,49 @@ function setTopicComplete(topicId, complete) {
 // to the next element on the page — the browser's default Tab behavior,
 // which fights with writing Python since indentation is meaningful here.
 // Shift+Tab removes one level of indentation from the current line.
+// Shared Pyodide input/output wiring, used by every topic page so a fix
+// only has to happen in one place.
+//
+// currentOutputEl tracks which code block's output box is "live" right now;
+// each page's Run button points this at itself before executing.
+let currentOutputEl = null;
+let shownOutputLength = 0;
+
+function setCurrentOutput(el) {
+  currentOutputEl = el;
+  shownOutputLength = 0; // fresh run, nothing shown in a dialog yet
+}
+
+function pyodideStdout(text) {
+  if (currentOutputEl) currentOutputEl.textContent += text + "\n";
+}
+
+function pyodideStderr(text) {
+  if (currentOutputEl) currentOutputEl.textContent += "Error: " + text + "\n";
+}
+
+// input() is backed by window.prompt(), which freezes the page the instant
+// it's called — before the browser gets a chance to paint whatever was just
+// print()ed (like the question text). Rather than depend on that paint
+// happening, this bakes the recent output directly into the dialog itself,
+// so the question is visible no matter what the page behind it looks like.
+//
+// Only the output printed SINCE the last input() call is included — not the
+// whole transcript — so the dialog stays short even in a long quiz instead
+// of growing every time. The full transcript is still on the page itself,
+// in the output box, once the run finishes.
+function browserInput(promptText) {
+  const newText = currentOutputEl ? currentOutputEl.textContent.slice(shownOutputLength) : "";
+  const fullPrompt = (newText ? newText + "\n" : "") + (promptText || "");
+  const answer = window.prompt(fullPrompt);
+  const value = answer === null ? "" : answer;
+  if (currentOutputEl) {
+    currentOutputEl.textContent += `${promptText}${value}\n`;
+    shownOutputLength = currentOutputEl.textContent.length;
+  }
+  return value;
+}
+
 function enableTabIndent(selector) {
   document.querySelectorAll(selector).forEach(textarea => {
     textarea.addEventListener("keydown", (e) => {

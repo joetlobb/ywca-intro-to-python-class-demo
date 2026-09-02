@@ -207,15 +207,6 @@ print("I'm hoping to learn ...")</textarea>
   <p><a href="index.html">&larr; Back to all topics</a></p>
 
   <script type="text/javascript">
-    let currentOutputEl = null;
-
-    function browserInput(promptText) {
-      const answer = window.prompt(promptText || "");
-      const value = answer === null ? "" : answer;
-      if (currentOutputEl) currentOutputEl.textContent += `${promptText}${value}\n`;
-      return value;
-    }
-
     async function main() {
       const statusEl = document.getElementById("status");
       statusEl.textContent = "Loading Python environment…";
@@ -223,8 +214,8 @@ print("I'm hoping to learn ...")</textarea>
       try {
         const pyodide = await loadPyodide({
           indexURL: "https://cdn.jsdelivr.net/pyodide/v314.0.6/full/",
-          stdout: (text) => { if (currentOutputEl) currentOutputEl.textContent += text + "\n"; },
-          stderr: (text) => { if (currentOutputEl) currentOutputEl.textContent += "Error: " + text + "\n"; }
+          stdout: pyodideStdout,
+          stderr: pyodideStderr
         });
 
         pyodide.globals.set("browserInput", browserInput);
@@ -243,7 +234,7 @@ builtins.input = _input_shim
           const output = runner.querySelector(".output");
 
           button.addEventListener("click", async () => {
-            currentOutputEl = output;
+            setCurrentOutput(output);
             output.textContent = "";
             try {
               await pyodide.runPythonAsync(textarea.value);
