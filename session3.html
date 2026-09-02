@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Making Decisions: If / Elif / Else</title>
+  <script src="client.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v314.0.6/full/pyodide.js"></script>
+  <style>
+    :root {
+      --accent: #1f4e5f;
+      --bg: #f7f7f5;
+      --code-bg: #f2f2f2;
+      --border: #cccccc;
+    }
+
+    body {
+      font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+      line-height: 1.5;
+      color: #222;
+      background: var(--bg);
+    }
+
+    h1 {
+      color: var(--accent);
+      font-size: 1.6rem;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      color: #555;
+      margin-top: 0;
+      margin-bottom: 24px;
+    }
+
+    h2 {
+      color: var(--accent);
+      font-size: 1.15rem;
+      margin-top: 36px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 4px;
+    }
+
+    #status {
+      background: #fff8e1;
+      border: 1px solid #e0c97f;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+
+    .vocab dt {
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .vocab dd {
+      margin: 0 0 4px 0;
+    }
+
+    ul.objectives {
+      padding-left: 20px;
+    }
+
+    .code-runner {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      margin: 14px 0 22px;
+    }
+
+    .code-runner .label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #777;
+      margin-bottom: 6px;
+    }
+
+    .code-input {
+      width: 100%;
+      box-sizing: border-box;
+      font-family: "Courier New", monospace;
+      font-size: 0.95rem;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      resize: vertical;
+      white-space: pre;
+    }
+
+    .run-btn {
+      margin-top: 8px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .run-btn:hover {
+      opacity: 0.9;
+    }
+
+    .output {
+      background: var(--code-bg);
+      padding: 10px;
+      min-height: 24px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-top: 8px;
+      font-family: "Courier New", monospace;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+    }
+
+    .stretch {
+      background: #eef5f2;
+      border-left: 4px solid var(--accent);
+      padding: 10px 14px;
+      border-radius: 4px;
+      margin: 14px 0;
+    }
+
+    .note {
+      background: #fff4e5;
+      border-left: 4px solid #c9822b;
+      padding: 10px 14px;
+      border-radius: 4px;
+      margin: 14px 0;
+      font-size: 0.95rem;
+    }
+
+    .complete-box {
+      margin-top: 40px;
+      padding: 16px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <p><a href="index.html">&larr; Back to all topics</a></p>
+
+  <h1>Making Decisions: If / Elif / Else</h1>
+  <p class="subtitle" id="client-banner">YWCA Learning Center &mdash; Intro to Python Programming</p>
+
+  <p id="status">Loading Python environment&hellip;</p>
+
+  <h2>Learning Objectives</h2>
+  <p>By the end of this topic, you'll be able to:</p>
+  <ul class="objectives">
+    <li>Explain what it means for code to make a decision.</li>
+    <li>Write an <code>if</code> / <code>elif</code> / <code>else</code> statement.</li>
+    <li>Use comparison operators (<code>==</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>!=</code>).</li>
+    <li>Combine conditions with <code>and</code> / <code>or</code>.</li>
+  </ul>
+
+  <h2>Key Vocabulary</h2>
+  <dl class="vocab">
+    <dt>Conditional</dt>
+    <dd>code that runs only when a certain condition is true.</dd>
+    <dt>Boolean</dt>
+    <dd>a value that is either <code>True</code> or <code>False</code>.</dd>
+    <dt>Comparison operator</dt>
+    <dd>a symbol like <code>==</code> or <code>&gt;</code> used to compare two values.</dd>
+    <dt>and / or</dt>
+    <dd>words used to combine more than one condition into a single check.</dd>
+  </dl>
+
+  <h2>If This, Then That</h2>
+  <p>"If it's raining, bring an umbrella; otherwise, don't" is a conditional &mdash; a decision your code makes based on something being true or false. Try the example below.</p>
+
+  <div class="code-runner">
+    <div class="label">Try it</div>
+    <textarea class="code-input" rows="5">weather = input("Is it raining? (yes/no) ")
+if weather == "yes":
+    print("Bring an umbrella!")
+else:
+    print("Enjoy the sunshine.")</textarea>
+    <br><button class="run-btn">Run</button>
+    <pre class="output"></pre>
+  </div>
+
+  <div class="note">
+    <strong>Good to know:</strong> notice the colon <code>:</code> at the end of the <code>if</code> and <code>else</code> lines, and that the line underneath is indented. That indentation is how Python knows which lines belong to which condition &mdash; it's not just for looks.
+  </div>
+
+  <p>Use <code>elif</code> when you have more than two possible outcomes to check, in order:</p>
+
+  <div class="code-runner">
+    <div class="label">Try it</div>
+    <textarea class="code-input" rows="7">age = int(input("How old are you? "))
+if age < 13:
+    print("You are a child.")
+elif age < 20:
+    print("You are a teenager.")
+else:
+    print("You are an adult.")</textarea>
+    <br><button class="run-btn">Run</button>
+    <pre class="output"></pre>
+  </div>
+
+  <h2>Guided Practice</h2>
+  <p>Write a program that asks for a temperature and prints "It's cold," "It's nice out," or "It's hot," depending on the number.</p>
+
+  <div class="code-runner">
+    <div class="label">Your turn</div>
+    <textarea class="code-input" rows="7">temp = int(input("What's the temperature? "))
+</textarea>
+    <br><button class="run-btn">Run</button>
+    <pre class="output"></pre>
+  </div>
+
+  <h2>Independent Practice</h2>
+  <p>Write a simple password checker: ask for a password with <code>input()</code>, and print "Access granted" if it matches a value you choose, or "Access denied" if it doesn't.</p>
+
+  <div class="code-runner">
+    <div class="label">Your turn</div>
+    <textarea class="code-input" rows="6"># Write your password checker below
+
+</textarea>
+    <br><button class="run-btn">Run</button>
+    <pre class="output"></pre>
+  </div>
+
+  <div class="stretch">
+    <strong>Stretch activity (optional):</strong> add a second condition using <code>and</code> &mdash; check both a username and a password before granting access.
+    <div class="code-runner">
+      <div class="label">Stretch</div>
+      <textarea class="code-input" rows="6">username = input("Username: ")
+password = input("Password: ")
+</textarea>
+      <br><button class="run-btn">Run</button>
+      <pre class="output"></pre>
+    </div>
+  </div>
+
+  <h2>Common Mistakes to Watch For</h2>
+  <ul>
+    <li>Using <code>=</code> (assignment) instead of <code>==</code> (comparison) inside an <code>if</code> statement.</li>
+    <li>Missing the colon at the end of <code>if</code> / <code>elif</code> / <code>else</code> lines.</li>
+    <li>Inconsistent indentation on the lines underneath &mdash; keep it consistent within each block.</li>
+  </ul>
+
+  <div class="complete-box">
+    <label>
+      <input type="checkbox" id="complete-topic">
+      Mark this topic complete
+    </label>
+  </div>
+
+  <script type="text/javascript">
+    let currentOutputEl = null;
+
+    function browserInput(promptText) {
+      const answer = window.prompt(promptText || "");
+      const value = answer === null ? "" : answer;
+      if (currentOutputEl) currentOutputEl.textContent += `${promptText}${value}\n`;
+      return value;
+    }
+
+    async function main() {
+      const statusEl = document.getElementById("status");
+      statusEl.textContent = "Loading Python environment…";
+
+      try {
+        const pyodide = await loadPyodide({
+          indexURL: "https://cdn.jsdelivr.net/pyodide/v314.0.6/full/",
+          stdout: (text) => {
+            if (currentOutputEl) currentOutputEl.textContent += text + "\n";
+          },
+          stderr: (text) => {
+            if (currentOutputEl) currentOutputEl.textContent += "Error: " + text + "\n";
+          }
+        });
+
+        pyodide.globals.set("browserInput", browserInput);
+        await pyodide.runPythonAsync(`
+import builtins
+def _input_shim(prompt=""):
+    return browserInput(prompt)
+builtins.input = _input_shim
+`);
+
+        statusEl.textContent = "Ready. Click Run on any example below.";
+
+        document.querySelectorAll(".code-runner").forEach(runner => {
+          const textarea = runner.querySelector(".code-input");
+          const button = runner.querySelector(".run-btn");
+          const output = runner.querySelector(".output");
+
+          button.addEventListener("click", async () => {
+            currentOutputEl = output;
+            output.textContent = "";
+            try {
+              await pyodide.runPythonAsync(textarea.value);
+            } catch (err) {
+              output.textContent += `\nExecution Error: ${err.message}`;
+            }
+          });
+        });
+
+      } catch (initError) {
+        statusEl.textContent = `Initialization Failed: ${initError.message}`;
+      }
+    }
+
+    main();
+
+    const TOPIC_ID = "decisions";
+    const clientBanner = document.getElementById("client-banner");
+    const activeClient = getActiveClient();
+    clientBanner.textContent = activeClient ?
+      `YWCA Learning Center — working with ${activeClient}` :
+      "YWCA Learning Center — no client selected (go back to Topics to enter a name)";
+
+    const completeBox = document.getElementById("complete-topic");
+    completeBox.checked = isTopicComplete(TOPIC_ID);
+    completeBox.addEventListener("change", () => {
+      setTopicComplete(TOPIC_ID, completeBox.checked);
+    });
+  </script>
+
+</body>
+
+</html>
