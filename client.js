@@ -32,3 +32,32 @@ function isTopicComplete(topicId) {
 function setTopicComplete(topicId, complete) {
   localStorage.setItem(progressKey(topicId), complete ? "true" : "false");
 }
+
+// Makes Tab insert indentation inside a textarea instead of jumping focus
+// to the next element on the page — the browser's default Tab behavior,
+// which fights with writing Python since indentation is meaningful here.
+// Shift+Tab removes one level of indentation from the current line.
+function enableTabIndent(selector) {
+  document.querySelectorAll(selector).forEach(textarea => {
+    textarea.addEventListener("keydown", (e) => {
+      if (e.key !== "Tab") return;
+      e.preventDefault();
+
+      const indent = "    "; // 4 spaces, matching the code already on these pages
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+
+      if (e.shiftKey) {
+        const lineStart = textarea.value.lastIndexOf("\n", start - 1) + 1;
+        const before = textarea.value.slice(lineStart, start);
+        if (before.startsWith(indent)) {
+          textarea.value = textarea.value.slice(0, lineStart) + before.slice(indent.length) + textarea.value.slice(start);
+          textarea.selectionStart = textarea.selectionEnd = start - indent.length;
+        }
+      } else {
+        textarea.value = textarea.value.slice(0, start) + indent + textarea.value.slice(end);
+        textarea.selectionStart = textarea.selectionEnd = start + indent.length;
+      }
+    });
+  });
+}

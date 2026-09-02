@@ -14,7 +14,6 @@
       --code-bg: #f2f2f2;
       --border: #cccccc;
     }
-
     body {
       font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       max-width: 760px;
@@ -24,27 +23,9 @@
       color: #222;
       background: var(--bg);
     }
-
-    h1 {
-      color: var(--accent);
-      font-size: 1.6rem;
-      margin-bottom: 4px;
-    }
-
-    .subtitle {
-      color: #555;
-      margin-top: 0;
-      margin-bottom: 24px;
-    }
-
-    h2 {
-      color: var(--accent);
-      font-size: 1.15rem;
-      margin-top: 36px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 4px;
-    }
-
+    h1 { color: var(--accent); font-size: 1.6rem; margin-bottom: 4px; }
+    .subtitle { color: #555; margin-top: 0; margin-bottom: 24px; }
+    h2 { color: var(--accent); font-size: 1.15rem; margin-top: 36px; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
     #status {
       background: #fff8e1;
       border: 1px solid #e0c97f;
@@ -53,20 +34,9 @@
       font-size: 0.9rem;
       margin-bottom: 24px;
     }
-
-    .vocab dt {
-      font-weight: bold;
-      margin-top: 8px;
-    }
-
-    .vocab dd {
-      margin: 0 0 4px 0;
-    }
-
-    ul.objectives {
-      padding-left: 20px;
-    }
-
+    .vocab dt { font-weight: bold; margin-top: 8px; }
+    .vocab dd { margin: 0 0 4px 0; }
+    ul.objectives { padding-left: 20px; }
     .code-runner {
       background: #fff;
       border: 1px solid var(--border);
@@ -74,7 +44,6 @@
       padding: 14px;
       margin: 14px 0 22px;
     }
-
     .code-runner .label {
       font-size: 0.8rem;
       text-transform: uppercase;
@@ -82,7 +51,6 @@
       color: #777;
       margin-bottom: 6px;
     }
-
     .code-input {
       width: 100%;
       box-sizing: border-box;
@@ -94,7 +62,6 @@
       resize: vertical;
       white-space: pre;
     }
-
     .run-btn {
       margin-top: 8px;
       background: var(--accent);
@@ -105,11 +72,7 @@
       cursor: pointer;
       font-size: 0.9rem;
     }
-
-    .run-btn:hover {
-      opacity: 0.9;
-    }
-
+    .run-btn:hover { opacity: 0.9; }
     .output {
       background: var(--code-bg);
       padding: 10px;
@@ -121,7 +84,6 @@
       font-size: 0.9rem;
       white-space: pre-wrap;
     }
-
     .stretch {
       background: #eef5f2;
       border-left: 4px solid var(--accent);
@@ -129,7 +91,6 @@
       border-radius: 4px;
       margin: 14px 0;
     }
-
     .note {
       background: #fff4e5;
       border-left: 4px solid #c9822b;
@@ -138,7 +99,6 @@
       margin: 14px 0;
       font-size: 0.95rem;
     }
-
     .complete-box {
       margin-top: 40px;
       padding: 16px;
@@ -262,6 +222,8 @@ password = input("Password: ")
     </label>
   </div>
 
+  <p><a href="index.html">&larr; Back to all topics</a></p>
+
   <script type="text/javascript">
     let currentOutputEl = null;
 
@@ -279,12 +241,8 @@ password = input("Password: ")
       try {
         const pyodide = await loadPyodide({
           indexURL: "https://cdn.jsdelivr.net/pyodide/v314.0.6/full/",
-          stdout: (text) => {
-            if (currentOutputEl) currentOutputEl.textContent += text + "\n";
-          },
-          stderr: (text) => {
-            if (currentOutputEl) currentOutputEl.textContent += "Error: " + text + "\n";
-          }
+          stdout: (text) => { if (currentOutputEl) currentOutputEl.textContent += text + "\n"; },
+          stderr: (text) => { if (currentOutputEl) currentOutputEl.textContent += "Error: " + text + "\n"; }
         });
 
         pyodide.globals.set("browserInput", browserInput);
@@ -319,13 +277,14 @@ builtins.input = _input_shim
     }
 
     main();
+    enableTabIndent(".code-input");
 
     const TOPIC_ID = "decisions";
     const clientBanner = document.getElementById("client-banner");
     const activeClient = getActiveClient();
-    clientBanner.textContent = activeClient ?
-      `YWCA Learning Center — working with ${activeClient}` :
-      "YWCA Learning Center — no client selected (go back to Topics to enter a name)";
+    clientBanner.textContent = activeClient
+      ? `YWCA Learning Center — working with ${activeClient}`
+      : "YWCA Learning Center — no client selected (go back to Topics to enter a name)";
 
     const completeBox = document.getElementById("complete-topic");
     completeBox.checked = isTopicComplete(TOPIC_ID);

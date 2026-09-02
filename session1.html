@@ -199,7 +199,7 @@ print("I'm hoping to learn ...")</textarea>
 
   <div class="complete-box">
     <label>
-      <input type="checkbox" id="complete-session1">
+      <input type="checkbox" id="complete-topic">
       Mark this session complete
     </label>
   </div>
@@ -259,6 +259,7 @@ builtins.input = _input_shim
     }
 
     main();
+    enableTabIndent(".code-input");
 
     // Show who this progress belongs to, so it's obvious on a shared computer
     const TOPIC_ID = "getting-started";
@@ -269,7 +270,7 @@ builtins.input = _input_shim
       : "YWCA Learning Center — no client selected (go back to Topics to enter a name)";
 
     // Mark-complete checkbox: remember state per active client
-    const completeBox = document.getElementById("complete-session1");
+    const completeBox = document.getElementById("complete-topic");
     completeBox.checked = isTopicComplete(TOPIC_ID);
     completeBox.addEventListener("change", () => {
       setTopicComplete(TOPIC_ID, completeBox.checked);
