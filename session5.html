@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organizing Code: Lists &amp; Functions</title>
+  <script src="client.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v314.0.6/full/pyodide.js"></script>
+  <style>
+    :root {
+      --accent: #1f4e5f;
+      --bg: #f7f7f5;
+      --code-bg: #f2f2f2;
+      --border: #cccccc;
+    }
+    body {
+      font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+      line-height: 1.5;
+      color: #222;
+      background: var(--bg);
+    }
+    h1 { color: var(--accent); font-size: 1.6rem; margin-bottom: 4px; }
+    .subtitle { color: #555; margin-top: 0; margin-bottom: 24px; }
+    h2 { color: var(--accent); font-size: 1.15rem; margin-top: 36px; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+    #status {
+      background: #fff8e1;
+      border: 1px solid #e0c97f;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+    .vocab dt { font-weight: bold; margin-top: 8px; }
+    .vocab dd { margin: 0 0 4px 0; }
+    ul.objectives { padding-left: 20px; }
+    .code-runner {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      margin: 14px 0 22px;
+    }
+    .code-runner .label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #777;
+      margin-bottom: 6px;
+    }
+    .code-input {
+      width: 100%;
+      box-sizing: border-box;
+      font-family: "Courier New", monospace;
+      font-size: 0.95rem;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      resize: vertical;
+      white-space: pre;
+    }
+    .run-btn {
+      margin-top: 8px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .run-btn:hover { opacity: 0.9; }
+    .output {
+      background: var(--code-bg);
+      padding: 10px;
+      min-height: 24px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-top: 8px;
+      font-family: "Courier New", monospace;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+    }
+    .stretch {
+      background: #eef5f2;
+      border-left: 4px solid var(--accent);
+      padding: 10px 14px;
+      border-radius: 4px;
+      margin: 14px 0;
+    }
+    .note {
+      background: #fff4e5;
+      border-left: 4px solid #c9822b;
+      padding: 10px 14px;
+      border-radius: 4px;
+      margin: 14px 0;
+      font-size: 0.95rem;
+    }
+    .complete-box {
+      margin-top: 40px;
+      padding: 16px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <p><a href="index.html">&larr; Back to all topics</a></p>
+
+  <h1>Organizing Code: Lists &amp; Functions</h1>
+  <p class="subtitle" id="client-banner">YWCA Learning Center &mdash; Intro to Python Programming</p>
+
+  <p id="status">Loading Python environment&hellip;</p>
+
+  <h2>Learning Objectives</h2>
+  <p>By the end of this topic, you'll be able to:</p>
+  <ul class="objectives">
+    <li>Create and update a list.</li>
+    <li>Access items in a list by position.</li>
+    <li>Define a simple function with <code>def</code> and call it.</li>
+    <li>Explain why breaking code into functions makes it easier to read and reuse.</li>
+  </ul>
+
+  <h2>Key Vocabulary</h2>
+  <dl class="vocab">
+    <dt>List</dt>
+    <dd>an ordered collection of values, written in square brackets, like ["a", "b", "c"].</dd>
+    <dt>Index</dt>
+    <dd>the position of an item in a list, starting from 0.</dd>
+    <dt>Function</dt>
+    <dd>a named, reusable block of code that performs a specific task.</dd>
+    <dt>Parameter / argument</dt>
+    <dd>a value passed into a function so it can use it.</dd>
+    <dt>Return value</dt>
+    <dd>the result a function sends back after it runs.</dd>
+  </dl>
+
+  <h2>Holding Several Values at Once</h2>
+  <p>A list holds many related values in one variable, instead of one at a time.</p>
+
+  <div class="code-runner">
+    <div class="label">Try it</div>
+    <textarea class="code-input" rows="4">groceries = ["milk", "eggs", "bread"]
+print(groceries[0])
+groceries.append("apples")
+print(groceries)</textarea>
+    <br><button class="run-btn">Run</button>
+    <pre class="output"></pre>
+  </div>
+
+  <div class="note">
+    <strong>Good to know:</strong> indexing starts at 0, not 1 &mdash; <code>groceries[0]</code> is "milk", the first item in the list.
+  </div>
+
+  <h2>Reusable Blocks of Code: Functions</h2>
+  <p>A function is a named block of code you can run whenever you need it, instead of retyping the same lines over and over.</p>
+
+  <div class="code-runner">
+    <div class="label">Try it</div>
+    <textarea class="code-input" rows="5">def greet(name):
+    print(f"Welcome to Greenbridge, {name}!")
+
+greet("Maria")
+greet("James")</textarea>
+    <br><button class="run-btn">Run</button>
+    <pre class="output"></pre>
+  </div>
+
+  <p><code>name</code> here is a placeholder that gets filled in each time <code>greet()</code> is called with a different value &mdash; the same idea as <code>input()</code>, except the value comes from the code instead of the keyboard. A function can also hand a value back with <code>return</code>, instead of printing directly:</p>
+
+  <div class="code-runner">
+    <div class="label">Try it</div>
+    <textarea class="code-input" rows="5">def add(a, b):
+    return a + b
+
+result = add(4, 7)
+print(result)</textarea>
+    <br><button class="run-btn">Run</button>
+    <pre class="output"></pre>
+  </div>
+
+  <h2>Guided Practice</h2>
+  <p>This code already runs as-is &mdash; click Run and see what it prints. Then make it your own: add one or two more foods to the list using <code>.append()</code>, and replace <code>"your name here"</code> with an actual name.</p>
+
+  <div class="code-runner">
+    <div class="label">Your turn</div>
+    <textarea class="code-input" rows="9">foods = []
+foods.append("pizza")
+print(foods)
+
+def welcome_message(name):
+    return f"Hi {name}, welcome!"
+
+print(welcome_message("your name here"))</textarea>
+    <br><button class="run-btn">Run</button>
+    <pre class="output"></pre>
+  </div>
+
+  <h2>Independent Practice</h2>
+  <p>Write a function called <code>double(number)</code> that returns the number multiplied by two, and test it with at least three different numbers.</p>
+
+  <div class="code-runner">
+    <div class="label">Your turn</div>
+    <textarea class="code-input" rows="7"># Define double(number) below, then call it a few times
+
+</textarea>
+    <br><button class="run-btn">Run</button>
+    <pre class="output"></pre>
+  </div>
+
+  <div class="stretch">
+    <strong>Stretch activity (optional):</strong> write a function that takes a list of numbers and returns their total, using a <code>for</code> loop inside the function.
+    <div class="code-runner">
+      <div class="label">Stretch</div>
+      <textarea class="code-input" rows="7">numbers = [4, 15, 8, 23, 6]
+
+</textarea>
+      <br><button class="run-btn">Run</button>
+      <pre class="output"></pre>
+    </div>
+  </div>
+
+  <h2>Common Mistakes to Watch For</h2>
+  <ul>
+    <li>Trying to access a list index that doesn't exist (like <code>groceries[5]</code> on a 3-item list), causing an <code>IndexError</code>.</li>
+    <li>Forgetting <code>return</code> in a function and being confused why the result prints as <code>None</code>.</li>
+    <li>Confusing <code>print()</code> inside a function with <code>return</code> &mdash; one displays a value, the other sends it back to be used elsewhere.</li>
+  </ul>
+
+  <div class="complete-box">
+    <label>
+      <input type="checkbox" id="complete-topic">
+      Mark this topic complete
+    </label>
+  </div>
+
+  <p><a href="index.html">&larr; Back to all topics</a></p>
+
+  <script type="text/javascript">
+    let currentOutputEl = null;
+
+    function browserInput(promptText) {
+      const answer = window.prompt(promptText || "");
+      const value = answer === null ? "" : answer;
+      if (currentOutputEl) currentOutputEl.textContent += `${promptText}${value}\n`;
+      return value;
+    }
+
+    async function main() {
+      const statusEl = document.getElementById("status");
+      statusEl.textContent = "Loading Python environment…";
+
+      try {
+        const pyodide = await loadPyodide({
+          indexURL: "https://cdn.jsdelivr.net/pyodide/v314.0.6/full/",
+          stdout: (text) => { if (currentOutputEl) currentOutputEl.textContent += text + "\n"; },
+          stderr: (text) => { if (currentOutputEl) currentOutputEl.textContent += "Error: " + text + "\n"; }
+        });
+
+        pyodide.globals.set("browserInput", browserInput);
+        await pyodide.runPythonAsync(`
+import builtins
+def _input_shim(prompt=""):
+    return browserInput(prompt)
+builtins.input = _input_shim
+`);
+
+        statusEl.textContent = "Ready. Click Run on any example below.";
+
+        document.querySelectorAll(".code-runner").forEach(runner => {
+          const textarea = runner.querySelector(".code-input");
+          const button = runner.querySelector(".run-btn");
+          const output = runner.querySelector(".output");
+
+          button.addEventListener("click", async () => {
+            currentOutputEl = output;
+            output.textContent = "";
+            try {
+              await pyodide.runPythonAsync(textarea.value);
+            } catch (err) {
+              output.textContent += `\nExecution Error: ${err.message}`;
+            }
+          });
+        });
+
+      } catch (initError) {
+        statusEl.textContent = `Initialization Failed: ${initError.message}`;
+      }
+    }
+
+    main();
+    enableTabIndent(".code-input");
+
+    const TOPIC_ID = "lists-functions";
+    const clientBanner = document.getElementById("client-banner");
+    const activeClient = getActiveClient();
+    clientBanner.textContent = activeClient
+      ? `YWCA Learning Center — working with ${activeClient}`
+      : "YWCA Learning Center — no client selected (go back to Topics to enter a name)";
+
+    const completeBox = document.getElementById("complete-topic");
+    completeBox.checked = isTopicComplete(TOPIC_ID);
+    completeBox.addEventListener("change", () => {
+      setTopicComplete(TOPIC_ID, completeBox.checked);
+    });
+  </script>
+
+</body>
+
+</html>
