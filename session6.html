@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practice Project: Build a Quiz Game</title>
+  <script src="client.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v314.0.6/full/pyodide.js"></script>
+  <style>
+    :root {
+      --accent: #1f4e5f;
+      --bg: #f7f7f5;
+      --code-bg: #f2f2f2;
+      --border: #cccccc;
+    }
+    body {
+      font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+      line-height: 1.5;
+      color: #222;
+      background: var(--bg);
+    }
+    h1 { color: var(--accent); font-size: 1.6rem; margin-bottom: 4px; }
+    .subtitle { color: #555; margin-top: 0; margin-bottom: 24px; }
+    h2 { color: var(--accent); font-size: 1.15rem; margin-top: 36px; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+    #status {
+      background: #fff8e1;
+      border: 1px solid #e0c97f;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+    ul.objectives { padding-left: 20px; }
+    .code-runner {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      margin: 14px 0 22px;
+    }
+    .code-runner .label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #777;
+      margin-bottom: 6px;
+    }
+    .code-input {
+      width: 100%;
+      box-sizing: border-box;
+      font-family: "Courier New", monospace;
+      font-size: 0.95rem;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      resize: vertical;
+      white-space: pre;
+    }
+    .run-btn {
+      margin-top: 8px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .run-btn:hover { opacity: 0.9; }
+    .output {
+      background: var(--code-bg);
+      padding: 10px;
+      min-height: 24px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-top: 8px;
+      font-family: "Courier New", monospace;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+    }
+    .stretch {
+      background: #eef5f2;
+      border-left: 4px solid var(--accent);
+      padding: 10px 14px;
+      border-radius: 4px;
+      margin: 14px 0;
+    }
+    .note {
+      background: #fff4e5;
+      border-left: 4px solid #c9822b;
+      padding: 10px 14px;
+      border-radius: 4px;
+      margin: 14px 0;
+      font-size: 0.95rem;
+    }
+    .complete-box {
+      margin-top: 40px;
+      padding: 16px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <p><a href="index.html">&larr; Back to all topics</a></p>
+
+  <h1>Practice Project: Build a Quiz Game</h1>
+  <p class="subtitle" id="client-banner">YWCA Learning Center &mdash; Intro to Python Programming</p>
+
+  <p id="status">Loading Python environment&hellip;</p>
+
+  <h2>Learning Objectives</h2>
+  <p>By the end of this project, you'll be able to:</p>
+  <ul class="objectives">
+    <li>Combine variables, conditionals, loops, lists, and <code>input()</code> into one working program.</li>
+    <li>Debug your own code when something doesn't work as expected.</li>
+    <li>Show off a finished project you built yourself.</li>
+  </ul>
+
+  <h2>What You're Building</h2>
+  <p>A simple multiple-choice quiz game: it asks a series of questions, checks each answer, and reports a score at the end. This project reuses everything from the earlier topics, so it's a good test of how well those pieces fit together &mdash; and something real you can show a friend, a case manager, or a potential employer.</p>
+
+  <h2>Starter Code</h2>
+  <p>Read through this before running it. Notice <code>.lower()</code>, which makes the answer check ignore capitalization, and <code>len(questions)</code>, which counts how many questions are in the list so the loop and the final score both stay correct even if you add or remove questions.</p>
+
+  <div class="code-runner">
+    <div class="label">Try it</div>
+    <textarea class="code-input" rows="16">questions = [
+    "What color is the sky on a clear day?",
+    "What is 2 + 2?",
+    "What is the capital of France?"
+]
+answers = ["blue", "4", "paris"]
+score = 0
+
+for i in range(len(questions)):
+    print(questions[i])
+    guess = input("Your answer: ")
+    if guess.lower() == answers[i]:
+        print("Correct!")
+        score = score + 1
+    else:
+        print(f"Sorry, the answer was {answers[i]}.")
+
+print(f"You scored {score} out of {len(questions)}.")</textarea>
+    <br><button class="run-btn">Run</button>
+    <pre class="output"></pre>
+  </div>
+
+  <h2>Guided Practice</h2>
+  <p>Add a fourth question to the list above, along with a matching fourth answer, and confirm the score still comes out correct.</p>
+
+  <div class="code-runner">
+    <div class="label">Your turn</div>
+    <textarea class="code-input" rows="16">questions = [
+    "What color is the sky on a clear day?",
+    "What is 2 + 2?",
+    "What is the capital of France?"
+]
+answers = ["blue", "4", "paris"]
+score = 0
+
+for i in range(len(questions)):
+    print(questions[i])
+    guess = input("Your answer: ")
+    if guess.lower() == answers[i]:
+        print("Correct!")
+        score = score + 1
+    else:
+        print(f"Sorry, the answer was {answers[i]}.")
+
+print(f"You scored {score} out of {len(questions)}.")</textarea>
+    <br><button class="run-btn">Run</button>
+    <pre class="output"></pre>
+  </div>
+
+  <h2>Make It Your Own</h2>
+  <p>Now personalize your quiz: pick your own topic &mdash; about yourself, your community, a hobby, anything you like &mdash; write at least five questions, and try it out.</p>
+
+  <div class="code-runner">
+    <div class="label">Your turn</div>
+    <textarea class="code-input" rows="16"># Write your own quiz below, with at least 5 questions
+
+questions = []
+answers = []
+score = 0
+
+</textarea>
+    <br><button class="run-btn">Run</button>
+    <pre class="output"></pre>
+  </div>
+
+  <div class="stretch">
+    <strong>Stretch activity (optional):</strong> wrap the whole quiz in a function called <code>run_quiz()</code>, so the entire thing can be started by calling <code>run_quiz()</code> once at the bottom of your program.
+    <div class="code-runner">
+      <div class="label">Stretch</div>
+      <textarea class="code-input" rows="6">def run_quiz():
+    # Move your quiz code inside here
+
+    pass
+
+run_quiz()</textarea>
+      <br><button class="run-btn">Run</button>
+      <pre class="output"></pre>
+    </div>
+  </div>
+
+  <h2>Where to Go Next</h2>
+  <p>You've now covered the basics: variables, input, decisions, loops, lists, and functions &mdash; and built something real with them. A few free ways to keep going:</p>
+  <ul>
+    <li><strong>freeCodeCamp's Python curriculum</strong> (freecodecamp.org) &mdash; free, self-paced, project-based.</li>
+    <li><strong>CS50's Introduction to Programming with Python</strong> (Harvard, free via cs50.harvard.edu or edX) &mdash; more structured and in-depth.</li>
+    <li><strong>Python.org's official beginner's guide</strong> (python.org/about/gettingstarted) &mdash; for reference documentation.</li>
+    <li>Ask your instructor about any ongoing YWCA digital skills or coding meetups.</li>
+  </ul>
+
+  <div class="complete-box">
+    <label>
+      <input type="checkbox" id="complete-topic">
+      Mark this topic complete
+    </label>
+  </div>
+
+  <p><a href="index.html">&larr; Back to all topics</a></p>
+
+  <script type="text/javascript">
+    let currentOutputEl = null;
+
+    function browserInput(promptText) {
+      const answer = window.prompt(promptText || "");
+      const value = answer === null ? "" : answer;
+      if (currentOutputEl) currentOutputEl.textContent += `${promptText}${value}\n`;
+      return value;
+    }
+
+    async function main() {
+      const statusEl = document.getElementById("status");
+      statusEl.textContent = "Loading Python environment…";
+
+      try {
+        const pyodide = await loadPyodide({
+          indexURL: "https://cdn.jsdelivr.net/pyodide/v314.0.6/full/",
+          stdout: (text) => { if (currentOutputEl) currentOutputEl.textContent += text + "\n"; },
+          stderr: (text) => { if (currentOutputEl) currentOutputEl.textContent += "Error: " + text + "\n"; }
+        });
+
+        pyodide.globals.set("browserInput", browserInput);
+        await pyodide.runPythonAsync(`
+import builtins
+def _input_shim(prompt=""):
+    return browserInput(prompt)
+builtins.input = _input_shim
+`);
+
+        statusEl.textContent = "Ready. Click Run on any example below.";
+
+        document.querySelectorAll(".code-runner").forEach(runner => {
+          const textarea = runner.querySelector(".code-input");
+          const button = runner.querySelector(".run-btn");
+          const output = runner.querySelector(".output");
+
+          button.addEventListener("click", async () => {
+            currentOutputEl = output;
+            output.textContent = "";
+            try {
+              await pyodide.runPythonAsync(textarea.value);
+            } catch (err) {
+              output.textContent += `\nExecution Error: ${err.message}`;
+            }
+          });
+        });
+
+      } catch (initError) {
+        statusEl.textContent = `Initialization Failed: ${initError.message}`;
+      }
+    }
+
+    main();
+    enableTabIndent(".code-input");
+
+    const TOPIC_ID = "quiz-project";
+    const clientBanner = document.getElementById("client-banner");
+    const activeClient = getActiveClient();
+    clientBanner.textContent = activeClient
+      ? `YWCA Learning Center — working with ${activeClient}`
+      : "YWCA Learning Center — no client selected (go back to Topics to enter a name)";
+
+    const completeBox = document.getElementById("complete-topic");
+    completeBox.checked = isTopicComplete(TOPIC_ID);
+    completeBox.addEventListener("change", () => {
+      setTopicComplete(TOPIC_ID, completeBox.checked);
+    });
+  </script>
+
+</body>
+
+</html>
